@@ -1,0 +1,31 @@
+fecha,producto,categoria,precio,cantidad_vendida,ingresos,region,vendedor
+2024-01-15,Laptop Dell XPS,Electrónicos,1299.99,5,6499.95,Norte,Ana García
+2024-01-16,iPhone 15,Electrónicos,999.99,8,7999.92,Sur,Carlos López
+2024-01-17,Camiseta Nike,Ropa,29.99,25,749.75,Este,María Rodríguez
+2024-01-18,Auriculares Sony,Electrónicos,199.99,12,2399.88,Oeste,Juan Martínez
+2024-01-19,Zapatillas Adidas,Ropa,89.99,15,1349.85,Norte,Laura Sánchez
+2024-01-20,Tablet Samsung,Electrónicos,449.99,7,3149.93,Sur,Pedro González
+2024-01-21,Pantalón Levi's,Ropa,79.99,18,1439.82,Este,Carmen Fernández
+2024-01-22,MacBook Pro,Electrónicos,1999.99,3,5999.97,Oeste,Miguel Torres
+2024-01-23,Sudadera H&M,Ropa,39.99,22,879.78,Norte,Elena Ruiz
+2024-01-24,Monitor LG,Electrónicos,299.99,9,2699.91,Sur,David Morales
+2024-01-25,Chaqueta Zara,Ropa,119.99,11,1319.89,Este,Sofía Jiménez
+2024-01-26,Smartwatch Apple,Electrónicos,399.99,6,2399.94,Oeste,Roberto Díaz
+2024-01-27,Jeans Wrangler,Ropa,59.99,20,1199.80,Norte,Isabel Vega
+2024-01-28,Teclado Logitech,Electrónicos,89.99,14,1259.86,Sur,Francisco Herrera
+2024-01-29,Vestido Mango,Ropa,69.99,13,909.87,Este,Natalia Castro
+2024-02-01,PlayStation 5,Electrónicos,499.99,4,1999.96,Oeste,Alejandro Ramos
+2024-02-02,Blusa Bershka,Ropa,24.99,28,699.72,Norte,Patricia Guerrero
+2024-02-03,Ratón Gaming,Electrónicos,79.99,16,1279.84,Sur,José Iglesias
+2024-02-04,Falda Pull&Bear,Ropa,34.99,19,664.81,Este,Cristina Molina
+2024-02-05,Nintendo Switch,Electrónicos,349.99,8,2799.92,Oeste,Antonio Ortiz
+2024-02-06,Camisa Massimo,Ropa,49.99,17,849.83,Norte,Beatriz Vargas
+2024-02-07,Webcam HD,Electrónicos,129.99,10,1299.90,Sur,Manuel Romero
+2024-02-08,Shorts Nike,Ropa,19.99,30,599.70,Este,Lucía Silva
+2024-02-09,Altavoces JBL,Electrónicos,149.99,11,1649.89,Oeste,Ángel Medina
+2024-02-10,Abrigo Springfield,Ropa,99.99,8,799.92,Norte,Raquel Núñez
+2024-02-11,Impresora HP,Electrónicos,179.99,7,1259.93,Sur,Sergio Peña
+2024-02-12,Polo Lacoste,Ropa,89.99,12,1079.88,Este,Alicia Cano
+2024-02-13,Router WiFi,Electrónicos,69.99,15,1049.85,Oeste,Rubén Prieto
+2024-02-14,Bufanda Stradivarius,Ropa,15.99,35,559.65,Norte,Pilar Aguilar
+2024-02-15,Cámara Canon,Electrónicos,599.99,5,2999.95,Sur,Jorge Pascual
