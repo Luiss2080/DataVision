@@ -837,36 +837,63 @@ def main():
     
     # Configuración de tema
     with st.sidebar.expander("🎨 Tema y Apariencia"):
-        tema_color = st.selectbox(
+        # Inicializar configuraciones en session_state
+        if 'config_tema' not in st.session_state:
+            st.session_state.config_tema = "Azul Profesional"
+        if 'config_grid' not in st.session_state:
+            st.session_state.config_grid = True
+        if 'config_animaciones' not in st.session_state:
+            st.session_state.config_animaciones = False
+            
+        st.session_state.config_tema = st.selectbox(
             "Esquema de colores",
             ["Azul Profesional", "Verde Natura", "Púrpura Elegante", "Naranja Energético"],
+            index=["Azul Profesional", "Verde Natura", "Púrpura Elegante", "Naranja Energético"].index(st.session_state.config_tema),
             help="Personaliza los colores de los gráficos"
         )
         
-        mostrar_grid = st.checkbox("Mostrar grilla en gráficos", value=True)
-        animaciones = st.checkbox("Activar animaciones", value=False)
+        st.session_state.config_grid = st.checkbox("Mostrar grilla en gráficos", value=st.session_state.config_grid)
+        st.session_state.config_animaciones = st.checkbox("Activar animaciones", value=st.session_state.config_animaciones)
         
     # Configuración de análisis
     with st.sidebar.expander("📊 Configuración de Análisis"):
-        precision_decimales = st.slider("Precisión decimal", 1, 6, 2)
-        metodo_correlacion = st.selectbox(
+        # Inicializar configuraciones en session_state
+        if 'config_precision' not in st.session_state:
+            st.session_state.config_precision = 2
+        if 'config_correlacion' not in st.session_state:
+            st.session_state.config_correlacion = "Pearson"
+        if 'config_outliers' not in st.session_state:
+            st.session_state.config_outliers = False
+            
+        st.session_state.config_precision = st.slider("Precisión decimal", 1, 6, st.session_state.config_precision)
+        st.session_state.config_correlacion = st.selectbox(
             "Método de correlación",
             ["Pearson", "Spearman", "Kendall"],
+            index=["Pearson", "Spearman", "Kendall"].index(st.session_state.config_correlacion),
             help="Elige el método para calcular correlaciones"
         )
         
-        filtrar_outliers = st.checkbox("Filtrar valores atípicos", value=False)
+        st.session_state.config_outliers = st.checkbox("Filtrar valores atípicos", value=st.session_state.config_outliers)
         
     # Configuración de exportación
     with st.sidebar.expander("💾 Opciones de Exportación"):
-        formato_export = st.selectbox(
+        # Inicializar configuraciones en session_state
+        if 'config_formato' not in st.session_state:
+            st.session_state.config_formato = "Excel (.xlsx)"
+        if 'config_incluir_graficos' not in st.session_state:
+            st.session_state.config_incluir_graficos = True
+        if 'config_incluir_stats' not in st.session_state:
+            st.session_state.config_incluir_stats = True
+            
+        st.session_state.config_formato = st.selectbox(
             "Formato de exportación",
             ["Excel (.xlsx)", "CSV", "PDF Report", "JSON"],
+            index=["Excel (.xlsx)", "CSV", "PDF Report", "JSON"].index(st.session_state.config_formato),
             help="Formato para exportar resultados"
         )
         
-        incluir_graficos = st.checkbox("Incluir gráficos en export", value=True)
-        incluir_estadisticas = st.checkbox("Incluir estadísticas", value=True)
+        st.session_state.config_incluir_graficos = st.checkbox("Incluir gráficos en export", value=st.session_state.config_incluir_graficos)
+        st.session_state.config_incluir_stats = st.checkbox("Incluir estadísticas", value=st.session_state.config_incluir_stats)
     
     # Separador visual
     st.sidebar.markdown("---")
@@ -922,21 +949,27 @@ def main():
         st.sidebar.markdown("### 🔍 Filtros de Datos")
         df = st.session_state.analizador.df
         
+        # Inicializar filtros en session_state
+        if 'filtro_filas' not in st.session_state:
+            st.session_state.filtro_filas = min(100, len(df))
+        if 'columnas_seleccionadas' not in st.session_state:
+            st.session_state.columnas_seleccionadas = df.columns.tolist()[:min(5, len(df.columns))]
+        
         # Filtro por filas
-        num_filas = st.sidebar.slider(
+        st.session_state.filtro_filas = st.sidebar.slider(
             "Número de filas a mostrar",
             min_value=10,
             max_value=min(1000, len(df)),
-            value=min(100, len(df)),
+            value=min(st.session_state.filtro_filas, len(df)),
             step=10
         )
         
         # Filtro por columnas
         if len(df.columns) > 5:
-            columnas_seleccionadas = st.sidebar.multiselect(
+            st.session_state.columnas_seleccionadas = st.sidebar.multiselect(
                 "Columnas a analizar",
                 options=df.columns.tolist(),
-                default=df.columns.tolist()[:5],
+                default=st.session_state.columnas_seleccionadas if st.session_state.columnas_seleccionadas else df.columns.tolist()[:5],
                 help="Selecciona las columnas para el análisis"
             )
         
