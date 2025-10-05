@@ -786,24 +786,50 @@ def main():
     
     # Sidebar mejorado con logo y nuevas funcionalidades
     
-    # Logo de DataVision
+    # Logo de DataVision compacto
+    st.sidebar.markdown("""
+    <div style="
+        text-align: center;
+        padding: 0.8rem 0.5rem;
+        margin-bottom: 0.5rem;
+        width: 100%;
+    ">
+    """, unsafe_allow_html=True)
+    
     try:
-        st.sidebar.image("public/img/Data.png", width=150, use_column_width=False)
+        # Crear columnas perfectamente centradas para el logo
+        col1, col2, col3 = st.sidebar.columns([0.2, 1, 0.2])
+        with col2:
+            st.image("public/img/Data.png", width=120)
     except:
-        # Fallback si no encuentra la imagen
+        # Fallback elegante si no encuentra la imagen
         st.sidebar.markdown("""
-        <div style="text-align: center; padding: 1rem; margin-bottom: 1rem;">
-            <h1 style="color: #4299e1; margin: 0; font-size: 2.5rem;">📊</h1>
-            <h2 style="color: white; margin: 0; font-size: 1.4rem;">DataVision</h2>
+        <div style="
+            text-align: center; 
+            padding: 0.8rem; 
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            background: rgba(66, 153, 225, 0.15);
+            border-radius: 8px;
+            margin: 0.2rem 0;
+            border: 1px solid rgba(66, 153, 225, 0.3);
+        ">
+            <h1 style="color: #4299e1; margin: 0; font-size: 3.2rem; text-shadow: 0 2px 6px rgba(0,0,0,0.4);">📊</h1>
+            <h2 style="color: white; margin: 0.2rem 0 0 0; font-size: 1.3rem; font-weight: 700; letter-spacing: 1px;">DataVision</h2>
+            <p style="color: #a0aec0; margin: 0.1rem 0 0 0; font-size: 0.8rem; opacity: 0.8;">2025</p>
         </div>
         """, unsafe_allow_html=True)
     
+    st.sidebar.markdown("</div>", unsafe_allow_html=True)
+    
     st.sidebar.markdown("""
-    <div style="text-align: center; padding: 1rem; margin-bottom: 1.5rem;">
-        <h2 style="color: white; margin: 0; font-size: 1.6rem;">
+    <div style="text-align: center; padding: 0.5rem; margin-bottom: 0.8rem;">
+        <h2 style="color: white; margin: 0; font-size: 1.4rem;">
             📁 Centro de Control
         </h2>
-        <p style="color: #a0aec0; text-align: center; margin-top: 0.5rem; font-size: 0.9rem;">
+        <p style="color: #a0aec0; text-align: center; margin-top: 0.3rem; font-size: 0.85rem;">
             Gestiona tus datos y configuraciones
         </p>
     </div>
@@ -829,11 +855,11 @@ def main():
                 st.sidebar.success(f"✅ Archivo cargado: {archivo_cargado.name}")
                 st.rerun()
     
-    # Separador visual
-    st.sidebar.markdown("---")
+    # Separador compacto
+    st.sidebar.markdown("<div style='margin: 0.5rem 0;'><hr style='margin: 0.3rem 0; border-color: #4299e1; opacity: 0.3;'></div>", unsafe_allow_html=True)
     
-    # Configuraciones avanzadas
-    st.sidebar.markdown("### ⚙️ Configuraciones")
+    # Configuraciones avanzadas compactas
+    st.sidebar.markdown("#### ⚙️ Configuraciones")
     
     # Configuración de tema
     with st.sidebar.expander("🎨 Tema y Apariencia"):
@@ -895,11 +921,11 @@ def main():
         st.session_state.config_incluir_graficos = st.checkbox("Incluir gráficos en export", value=st.session_state.config_incluir_graficos)
         st.session_state.config_incluir_stats = st.checkbox("Incluir estadísticas", value=st.session_state.config_incluir_stats)
     
-    # Separador visual
-    st.sidebar.markdown("---")
+    # Separador compacto  
+    st.sidebar.markdown("<div style='margin: 0.4rem 0;'><hr style='margin: 0.2rem 0; border-color: #4299e1; opacity: 0.3;'></div>", unsafe_allow_html=True)
     
-    # Herramientas rápidas
-    st.sidebar.markdown("### 🛠️ Herramientas Rápidas")
+    # Herramientas rápidas compactas
+    st.sidebar.markdown("#### 🛠️ Herramientas")
     
     col_tool1, col_tool2 = st.sidebar.columns(2)
     
@@ -933,20 +959,20 @@ def main():
     
     # Acciones rápidas con datos cargados
     if st.session_state.analizador.df is not None:
-        st.sidebar.markdown("### 🎛️ Controles del Dataset")
+        st.sidebar.markdown("#### 🎛️ Controles")
         
         col1, col2 = st.sidebar.columns(2)
         with col1:
-            if st.button("🔄 Recargar", help="Recargar análisis completo", use_container_width=True):
+            if st.button("🔄", help="Recargar análisis", use_container_width=True):
                 st.rerun()
         
         with col2:
-            if st.button("🗑️ Limpiar", help="Limpiar datos cargados", use_container_width=True):
+            if st.button("🗑️", help="Limpiar datos", use_container_width=True):
                 st.session_state.analizador.df = None
                 st.rerun()
         
-        # Filtros de datos
-        st.sidebar.markdown("### 🔍 Filtros de Datos")
+        # Filtros de datos compactos
+        st.sidebar.markdown("#### 🔍 Filtros")
         df = st.session_state.analizador.df
         
         # Inicializar filtros en session_state
@@ -973,19 +999,19 @@ def main():
                 help="Selecciona las columnas para el análisis"
             )
         
-        # Información del dataset mejorada
-        st.sidebar.markdown("### 📊 Información del Dataset")
+        # Información del dataset compacta
+        st.sidebar.markdown("#### 📊 Info Dataset")
         
         col_info1, col_info2 = st.sidebar.columns(2)
         with col_info1:
-            st.metric("📏 Filas", f"{df.shape[0]:,}")
-            st.metric("📊 Columnas", df.shape[1])
+            st.metric("📏", f"{df.shape[0]:,}", "filas")
+            st.metric("📊", df.shape[1], "columnas")
         
         with col_info2:
             memoria_mb = df.memory_usage(deep=True).sum() / 1024**2
-            st.metric("💾 Memoria", f"{memoria_mb:.1f} MB")
+            st.metric("💾", f"{memoria_mb:.1f}MB")
             valores_nulos = df.isnull().sum().sum()
-            st.metric("❌ Nulos", valores_nulos)
+            st.metric("❌", valores_nulos, "nulos")
         
         # Estadísticas rápidas
         with st.sidebar.expander("📈 Estadísticas Rápidas"):
@@ -999,26 +1025,19 @@ def main():
             else:
                 st.write("No hay columnas numéricas")
     
-    # Separador final
-    st.sidebar.markdown("---")
+    # Separador compacto final
+    st.sidebar.markdown("<div style='margin: 0.3rem 0;'><hr style='margin: 0.2rem 0; border-color: #4299e1; opacity: 0.2;'></div>", unsafe_allow_html=True)
     
-    # Información de la aplicación
-    st.sidebar.markdown("### ℹ️ Acerca de")
-    with st.sidebar.expander("📋 Información"):
+    # Información compacta de la aplicación
+    with st.sidebar.expander("ℹ️ DataVision 2025"):
         st.markdown("""
-        **DataVision 2025** 
+        **v2.0.1** | Python  
+        🚀 Análisis automático  
+        📊 Visualizaciones interactivas  
+        💾 Exportación múltiple  
         
-        Versión: 2.0.1  
-        Desarrollado con ❤️ en Python
-        
-        **Características:**
-        - Análisis automático de datos
-        - Visualizaciones interactivas  
-        - Exportación múltiple
-        - Interfaz intuitiva
+        [📋 GitHub](https://github.com) | [📖 Docs](https://docs.datavision.com)
         """)
-        
-        st.markdown("**Soporte técnico:** [GitHub](https://github.com)")
         
     # Footer del sidebar
     st.sidebar.markdown("""

@@ -1,0 +1,115 @@
+/* DataVision 2025 - CSS para Sidebar */
+
+/* Estilo para el contenedor del logo compacto */
+.logo-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 0.8rem 0.3rem;
+    margin-bottom: 0.5rem;
+    width: 100%;
+}
+
+/* Estilo para imagen del logo */
+.logo-image {
+    max-width: 125px;
+    height: auto;
+    display: block;
+    margin: 0 auto;
+    border-radius: 10px;
+    box-shadow: 0 3px 12px rgba(66, 153, 225, 0.25);
+    transition: transform 0.2s ease-in-out;
+}
+
+.logo-image:hover {
+    transform: scale(1.05);
+}
+
+/* Fallback del logo con estilo mejorado */
+.logo-fallback {
+    text-align: center;
+    padding: 1.2rem;
+    background: linear-gradient(135deg, rgba(66, 153, 225, 0.15), rgba(72, 187, 120, 0.1));
+    border-radius: 12px;
+    margin: 0.5rem 0;
+    border: 1px solid rgba(66, 153, 225, 0.2);
+}
+
+.logo-fallback h1 {
+    color: #4299e1;
+    margin: 0;
+    font-size: 2.8rem;
+    text-shadow: 0 2px 4px rgba(0,0,0,0.3);
+    animation: pulse 2s infinite;
+}
+
+.logo-fallback h2 {
+    color: white;
+    margin: 0.3rem 0 0 0;
+    font-size: 1.2rem;
+    font-weight: 600;
+    letter-spacing: 1px;
+}
+
+.logo-fallback p {
+    color: #a0aec0;
+    margin: 0.2rem 0 0 0;
+    font-size: 0.8rem;
+    opacity: 0.8;
+}
+
+/* Animación sutil para el logo */
+@keyframes pulse {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.05); }
+    100% { transform: scale(1); }
+}
+
+/* Estilo para el título del centro de control compacto */
+.control-center-title {
+    text-align: center;
+    padding: 0.6rem;
+    margin-bottom: 0.8rem;
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 8px;
+    border-left: 3px solid #4299e1;
+}
+
+.control-center-title h2 {
+    color: white;
+    margin: 0;
+    font-size: 1.6rem;
+    font-weight: 700;
+}
+
+.control-center-title p {
+    color: #a0aec0;
+    text-align: center;
+    margin-top: 0.5rem;
+    font-size: 0.9rem;
+    opacity: 0.9;
+}
+
+/* Mejoras generales para el sidebar */
+.sidebar .sidebar-content {
+    background: linear-gradient(180deg, #1a202c 0%, #2d3748 100%);
+}
+
+/* Responsive para pantallas pequeñas */
+@media (max-width: 768px) {
+    .logo-image {
+        max-width: 70px;
+    }
+    
+    .logo-fallback h1 {
+        font-size: 2.2rem;
+    }
+    
+    .logo-fallback h2 {
+        font-size: 1rem;
+    }
+    
+    .control-center-title h2 {
+        font-size: 1.4rem;
+    }
+}

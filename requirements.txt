@@ -1,38 +1,35 @@
-# Dependencias principales
-streamlit>=1.28.0
-pandas>=2.0.0
-numpy>=1.20.0
-matplotlib>=3.5.0
-seaborn>=0.11.0
-plotly>=5.15.0
-openpyxl>=3.0.0
+# ===== DEPENDENCIAS PRINCIPALES =====
+# Framework web y análisis de datos
+streamlit>=1.28.0,<2.0.0
+pandas>=2.0.0,<3.0.0
+numpy>=1.24.0,<2.0.0
 
-# Exportación de reportes
-reportlab==4.0.7
-fpdf2==2.7.6
-weasyprint==60.2
+# Visualización de datos
+matplotlib>=3.6.0,<4.0.0
+seaborn>=0.12.0,<1.0.0
+plotly>=5.15.0,<6.0.0
 
-# Detección de encoding y utilidades
-chardet==5.2.0
-python-dateutil==2.8.2
+# Manejo de archivos Excel
+openpyxl>=3.1.0,<4.0.0
 
-# Interfaz web
-flask==3.0.0
-jinja2==3.1.2
-werkzeug==3.0.1
+# ===== UTILIDADES ADICIONALES =====
+# Detección de encoding
+chardet>=5.2.0,<6.0.0
 
-# Validación y monitoreo de sistema
-psutil==5.9.6
-jsonschema==4.19.2
+# Fechas y tiempo
+python-dateutil>=2.8.2,<3.0.0
 
+# Monitoreo de sistema
+psutil>=5.9.0,<6.0.0
+
+# Validación de datos
+jsonschema>=4.17.0,<5.0.0
+
+# ===== DEPENDENCIAS DE DESARROLLO (OPCIONALES) =====
 # Testing
-pytest==7.4.3
-pytest-cov==4.1.0
+pytest>=7.4.0,<8.0.0
+pytest-cov>=4.1.0,<5.0.0
 
 # Formateo de código
-black==23.11.0
-flake8==6.1.0
-
-# Jupyter notebooks (opcional)
-jupyter==1.0.0
-ipykernel==6.26.0
+black>=23.0.0,<24.0.0
+flake8>=6.0.0,<7.0.0

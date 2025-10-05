@@ -1,27 +1,89 @@
 """
-DataVision - Analizador de Datos Interactivo
+DataVision 2025 - Plataforma de Análisis de Datos Inteligente
 Archivo principal del proyecto
 
 Uso:
     python main.py                  # Ejecutar interfaz Streamlit
     python main.py --help           # Mostrar ayuda
     python main.py --version        # Mostrar versión
+    python main.py --install        # Verificar e instalar dependencias
 """
 
 import sys
 import os
 import argparse
+import subprocess
 from pathlib import Path
 
+# Configuración del proyecto
+PROJECT_ROOT = Path(__file__).parent.resolve()
+PROJECT_NAME = "DataVision 2025"
+PROJECT_VERSION = "2.0.1"
+PYTHON_MIN_VERSION = (3, 9)
+
 # Agregar el directorio del proyecto al path de Python
-PROJECT_ROOT = Path(__file__).parent
 sys.path.insert(0, str(PROJECT_ROOT))
+
+
+def verificar_python_version():
+    """Verifica que la versión de Python sea compatible."""
+    version_actual = sys.version_info[:2]
+    if version_actual < PYTHON_MIN_VERSION:
+        print(f"❌ Error: Se requiere Python {PYTHON_MIN_VERSION[0]}.{PYTHON_MIN_VERSION[1]}+ (actual: {version_actual[0]}.{version_actual[1]})")
+        return False
+    return True
+
+
+def verificar_dependencias():
+    """Verifica que las dependencias principales estén instaladas."""
+    dependencias_principales = [
+        ("streamlit", "Streamlit"),
+        ("pandas", "Pandas"),
+        ("numpy", "NumPy"),
+        ("matplotlib", "Matplotlib"),
+        ("plotly", "Plotly")
+    ]
+    
+    faltantes = []
+    for modulo, nombre in dependencias_principales:
+        try:
+            __import__(modulo)
+        except ImportError:
+            faltantes.append(nombre)
+    
+    return faltantes
+
+
+def crear_directorios():
+    """Crea los directorios necesarios si no existen."""
+    directorios = [
+        PROJECT_ROOT / "datos" / "procesados",
+        PROJECT_ROOT / "report" / "excel",
+        PROJECT_ROOT / "report" / "pdf"
+    ]
+    
+    for directorio in directorios:
+        directorio.mkdir(parents=True, exist_ok=True)
 
 
 def ejecutar_streamlit():
     """Ejecuta la aplicación Streamlit."""
+    # Verificaciones previas
+    if not verificar_python_version():
+        return False
+    
+    faltantes = verificar_dependencias()
+    if faltantes:
+        print("❌ Error: Dependencias faltantes:")
+        for dep in faltantes:
+            print(f"   • {dep}")
+        print("\n💡 Ejecuta: pip install -r requirements.txt")
+        return False
+    
+    # Crear directorios necesarios
+    crear_directorios()
+    
     try:
-        import subprocess
         import streamlit.web.cli as stcli
         
         # Ruta al archivo de la interfaz
@@ -32,10 +94,11 @@ def ejecutar_streamlit():
             print(f"Buscando en: {interfaz_path}")
             return False
         
-        print("🚀 Iniciando DataVision...")
+        print(f"🚀 Iniciando {PROJECT_NAME} v{PROJECT_VERSION}")
         print("📊 Abriendo navegador automáticamente...")
+        print("🌐 URL: http://localhost:8501")
         print("💡 Presiona Ctrl+C para detener el servidor")
-        print("-" * 50)
+        print("-" * 60)
         
         # Ejecutar Streamlit
         sys.argv = [
