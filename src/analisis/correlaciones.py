@@ -68,8 +68,11 @@ def interpretar_correlacion(valor: float) -> str:
     Returns:
         Interpretación textual de la correlación
     """
+    if valor == 0:
+        return "Sin correlación"
+
     abs_valor = abs(valor)
-    
+
     if abs_valor >= 0.9:
         intensidad = "muy fuerte"
     elif abs_valor >= 0.7:
@@ -80,9 +83,9 @@ def interpretar_correlacion(valor: float) -> str:
         intensidad = "débil"
     else:
         intensidad = "muy débil"
-    
+
     direccion = "positiva" if valor > 0 else "negativa"
-    
+
     return f"Correlación {direccion} {intensidad}"
 
 
