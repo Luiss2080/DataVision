@@ -1,297 +1,160 @@
-# 📊 DataVision 2025 - Análisis de Datos Inteligente
-
 <div align="center">
-
-![DataVision Logo](public/img/Data.png)
-
-**🚀 Plataforma de análisis de datos avanzada con interfaz intuitiva**
-
-[![Python](https://img.shields.io/badge/Python-3.9%2B-blue?style=for-the-badge&logo=python&logoColor=white)](https://python.org)
-[![Streamlit](https://img.shields.io/badge/Streamlit-1.28%2B-red?style=for-the-badge&logo=streamlit&logoColor=white)](https://streamlit.io)
-[![Pandas](https://img.shields.io/badge/Pandas-2.0%2B-purple?style=for-the-badge&logo=pandas&logoColor=white)](https://pandas.pydata.org)
-[![Plotly](https://img.shields.io/badge/Plotly-5.15%2B-green?style=for-the-badge&logo=plotly&logoColor=white)](https://plotly.com)
-
-[🎯 Demo en Vivo](#-demo-rápido) • [📚 Documentación](#-documentación) • [🛠️ Instalación](#️-instalación) • [🤝 Contribuir](#-contribuir)
-
+  <img src="docs/assets/logo.svg" width="96" alt="Logo de DataVision" />
+  <h1>DataVision</h1>
+  <p><b>Análisis exploratorio de datos en el navegador: sube un CSV o Excel y obtén estadísticas, correlaciones y gráficas interactivas.</b></p>
+  <img src="https://img.shields.io/badge/estado-prototipo-orange?style=for-the-badge" alt="Estado: prototipo" />
+  <img src="https://img.shields.io/badge/python-3.9%2B-blue?style=for-the-badge&logo=python&logoColor=white" alt="Python 3.9+" />
+  <img src="https://img.shields.io/badge/streamlit-%E2%89%A51.28-FF4B4B?style=for-the-badge&logo=streamlit&logoColor=white" alt="Streamlit 1.28+" />
+  <img src="https://img.shields.io/badge/tests-ninguno-lightgrey?style=for-the-badge" alt="Sin tests" />
+  <img src="https://img.shields.io/badge/licencia-MIT-green?style=for-the-badge" alt="Licencia MIT" />
+  <p>
+    <a href="#-inicio-rápido">Inicio rápido</a> ·
+    <a href="#-características">Características</a> ·
+    <a href="#-arquitectura">Arquitectura</a> ·
+    <a href="#-pruebas">Pruebas</a> ·
+    <a href="#-lo-que-todavía-no-existe">Limitaciones</a>
+  </p>
 </div>
 
----
+DataVision es una aplicación web local hecha con **Streamlit, pandas y Plotly** para explorar un
+dataset tabular sin escribir código: carga de archivo, estadísticas descriptivas, matriz de
+correlación, gráficas y limpieza básica. **No** es un servicio en la nube, no guarda datos en
+ningún servidor y, hoy, es un prototipo sin tests ni CI.
 
-## ✨ Características Principales
+## 🎬 Vista rápida
 
-<table>
-<tr>
-<td width="50%">
+No hay capturas: la app necesita Streamlit y sus dependencias, que no se instalaron para este
+README, así que preferimos no mostrar imágenes que no sean reales. Este es el flujo de uso tal
+como lo implementa `interfaz/interfaz_streamlit.py`:
 
-### 📈 **Análisis Potente**
-- 🔍 **Estadísticas descriptivas** automáticas
-- 📊 **Matrices de correlación** interactivas
-- 🎯 **Detección de outliers** inteligente
-- 📉 **Análisis de tendencias** avanzado
-
-### 🎨 **Visualizaciones Impactantes**
-- 📊 **Gráficos interactivos** con Plotly
-- 🗺️ **Mapas de calor** dinámicos
-- 📈 **Scatter plots** animados
-- 📋 **Dashboards** personalizables
-
-</td>
-<td width="50%">
-
-### ⚡ **Rendimiento Optimizado**
-- 🚀 **Procesamiento rápido** (< 2 segundos)
-- 💾 **Manejo eficiente** de memoria
-- 📊 **Hasta 1M+ filas** de datos
-- 🔄 **Análisis en tiempo real**
-
-### 🛠️ **Facilidad de Uso**
-- 🖱️ **Interfaz drag & drop**
-- 📁 **Múltiples formatos** (CSV, Excel, JSON)
-- ⚙️ **Configuración avanzada**
-- 📱 **Diseño responsivo**
-
-</td>
-</tr>
-</table>
-
----
-
-## 🚀 Demo Rápido
-
-```bash
-# Ejecutar DataVision en 3 pasos simples
-git clone https://github.com/Luiss2080/DataVision.git
-cd DataVision
-pip install -r requirements.txt
-streamlit run interfaz/interfaz_streamlit.py
+```text
+python main.py  ->  http://localhost:8501
+ |
+ |- Barra lateral: subir .csv / .xlsx / .xls, o "Datos Demo", o descargar una plantilla CSV
+ |- Pantalla de inicio: botón "Iniciar con datos de ejemplo" (datos/ejemplos/empleados.csv)
+ `- Con datos cargados, 5 pestañas:
+      Vista General | Estadísticas | Correlaciones | Gráficas | Limpieza
 ```
 
-<div align="center">
+## ✨ Características
 
-### 🎬 **Vista Previa de la Interfaz**
+| Característica | Detalle |
+|---|---|
+| Carga de datos | Subida de `.csv`, `.xlsx` y `.xls`; para CSV prueba las codificaciones `utf-8`, `latin-1`, `iso-8859-1` y `cp1252`. |
+| Datos de ejemplo | `datos/ejemplos/empleados.csv` y `ventas.csv`, más un dataset demo y una plantilla CSV descargable. |
+| Vista general | Métricas de filas/columnas y vista previa de 5, 10, 20 o 50 filas. |
+| Estadísticas | `describe()` de las columnas numéricas y, por columna, promedio, mediana, desviación estándar, mínimo, máximo y rango. |
+| Correlaciones | Matriz de correlación (Pearson vía `DataFrame.corr()`) entre columnas numéricas. |
+| Gráficas | Distribución, barras por columna categórica, correlación y dispersión (Plotly). Descarga en HTML; en PNG solo si instalas `kaleido`. |
+| Limpieza | Eliminar duplicados y tratar nulos por columna: eliminar filas, rellenar con media, con mediana o con un valor propio. |
+| Ajustes | Selector de tema de color y precisión decimal en la barra lateral. |
 
-| Análisis Principal | Visualizaciones | Configuraciones |
-|:-----------------:|:---------------:|:---------------:|
-| *Dashboard principal con métricas* | *Gráficos interactivos* | *Panel de configuración* |
+## 🏗️ Arquitectura
 
-</div>
+La interfaz actual es un solo archivo con la clase `AnalizadorDatos`. El paquete `src/` contiene
+módulos más completos (análisis, exportación, validación) que **la interfaz todavía no importa**.
 
----
-
-## 🛠️ Instalación
-
-### 📋 **Requisitos del Sistema**
-- 🐍 Python 3.9 o superior
-- 💾 4GB RAM mínimo (8GB recomendado)
-- 💽 500MB espacio libre en disco
-
-### ⚡ **Instalación Rápida**
-
-```bash
-# Clonar el repositorio
-git clone https://github.com/Luiss2080/DataVision.git
-cd DataVision
-
-# Crear entorno virtual (recomendado)
-python -m venv venv
-source venv/bin/activate  # En Windows: venv\Scripts\activate
-
-# Instalar dependencias
-pip install -r requirements.txt
-
-# Ejecutar la aplicación
-streamlit run interfaz/interfaz_streamlit.py
+```mermaid
+flowchart LR
+    U["Usuario en el navegador"] --> UI["interfaz/interfaz_streamlit.py"]
+    UI --> AD["AnalizadorDatos: carga, gráficos, limpieza básica"]
+    AD --> PD["pandas / numpy"]
+    AD --> PL["Plotly"]
+    M["main.py"] -->|"lanza streamlit en :8501"| UI
+    subgraph SRC["src/ (sin conectar a la interfaz)"]
+        A1["analisis"]
+        A2["visualizacion"]
+        A3["exportacion: Excel y PDF"]
+        A4["utilidades: cargador y validaciones"]
+    end
 ```
-
-### 🔧 **Instalación Avanzada**
 
 <details>
-<summary>🐳 <strong>Docker (Recomendado para producción)</strong></summary>
+<summary>Estructura de carpetas</summary>
 
-```dockerfile
-# Dockerfile incluido en el proyecto
-docker build -t datavision .
-docker run -p 8501:8501 datavision
+```text
+main.py                      Punto de entrada (lanza Streamlit; --help, --version, --info, --check)
+interfaz/interfaz_streamlit.py   Interfaz completa (~1400 líneas)
+src/analisis/                correlaciones, estadisticas, limpieza_datos
+src/visualizacion/           graficos, tablas
+src/exportacion/             exportar_excel, exportar_pdf
+src/utilidades/              cargador_datos (csv/excel/json/parquet/tsv), validaciones
+datos/ejemplos/              empleados.csv, ventas.csv
+Dockerfile, docker-compose.yml, install.bat/.sh, run.bat, check_system.py
+docs/tutorial-ejecucion.md, QUICKSTART.md, CHANGELOG.md
 ```
 
 </details>
 
+## 🚀 Inicio rápido
+
+| Requisito | Versión |
+|---|---|
+| Python | 3.9 o superior (lo valida `main.py`) |
+| Dependencias | `requirements.txt` (streamlit, pandas, numpy, matplotlib, seaborn, plotly, openpyxl, etc.) |
+
+1. Clona el repositorio y entra en la carpeta:
+   ```bash
+   git clone https://github.com/Luiss2080/DataVision.git
+   cd DataVision
+   ```
+2. Crea un entorno virtual e instala dependencias:
+   ```bash
+   python -m venv .venv
+   source .venv/bin/activate      # Windows: .venv\Scripts\activate
+   pip install -r requirements.txt
+   ```
+3. Arranca la app (abre `http://localhost:8501`):
+   ```bash
+   python main.py
+   # o directamente:
+   streamlit run interfaz/interfaz_streamlit.py
+   ```
+
+> No se ejecutó la aplicación al preparar este README (Streamlit no estaba instalado): los
+> comandos salen de `main.py`, `requirements.txt` y el `Dockerfile`, no de una corrida verificada.
+
 <details>
-<summary>📦 <strong>Conda Environment</strong></summary>
+<summary>Docker</summary>
+
+El repo trae `Dockerfile` (Python 3.11-slim) y `docker-compose.yml` que exponen el puerto 8501:
 
 ```bash
-conda create -n datavision python=3.9
-conda activate datavision
-pip install -r requirements.txt
+docker compose up --build
 ```
+
+El `HEALTHCHECK` usa `curl`, que la imagen `python:3.11-slim` no incluye por defecto; puede
+marcar el contenedor como no saludable aunque la app funcione. No se probó.
 
 </details>
 
----
+## 🧪 Pruebas
 
-## 📖 Documentación
+No hay pruebas. La carpeta `tests/` solo contiene `__init__.py` y no hay flujo de CI.
+`requirements.txt` lista pytest, pytest-cov, black y flake8, pero no hay nada que ejecutar.
 
-### 🎯 **Guía de Uso Rápido**
+## 🔒 Seguridad
 
-1. **📁 Cargar Datos**
-   - Arrastra tu archivo CSV/Excel al área de carga
-   - O usa el botón "Examinar archivos"
-   - Formatos soportados: `.csv`, `.xlsx`, `.xls`, `.json`
+No hay autenticación ni almacenamiento remoto: los archivos se procesan en la sesión local de
+Streamlit. Si expones el puerto 8501 (p. ej. con Docker), cualquiera con acceso a la URL podrá usar
+la app y subir archivos.
 
-2. **📊 Explorar Análisis**
-   - **Vista General**: Resumen estadístico automático
-   - **Correlaciones**: Matrices de correlación interactivas
-   - **Visualizaciones**: Gráficos personalizables
-   - **Exportación**: Reportes en múltiples formatos
+## 🚧 Lo que todavía no existe
 
-3. **⚙️ Personalizar**
-   - Configura temas de color
-   - Ajusta precisión de cálculos
-   - Filtra datos por columnas/filas
-   - Exporta en formato preferido
+- **`src/` no está conectado a la interfaz**: las exportaciones a Excel/PDF, la detección de
+  outliers, las validaciones de calidad y la carga de JSON/Parquet existen como código en `src/`,
+  pero la UI no las usa. La UI solo acepta CSV y Excel.
+- **El selector "formato de exportación"** de la barra lateral guarda la preferencia pero no exporta
+  datos; lo único descargable hoy son las gráficas (HTML/PNG) y la plantilla CSV.
+- **Cifras de marketing sin medir**: la pantalla de inicio muestra "< 2 seg" y "1M+ filas" como
+  texto fijo; nunca se midieron. Quedan fuera de este README.
+- La descarga PNG requiere `kaleido`, que no figura en `requirements.txt`.
+- Sin tests, sin CI, y `requirements.txt` mezcla dependencias de ejecución con herramientas de
+  desarrollo. La versión aparece como 2.0.1 en `main.py`/`CHANGELOG.md` y como 1.0.0 en el texto de
+  `--info`.
 
-### 📚 **Casos de Uso**
+## 📄 Licencia
 
-<table>
-<tr>
-<td width="25%">
+MIT, ver [`LICENSE`](LICENSE).
 
-#### 🏢 **Empresas**
-- Análisis de ventas
-- KPIs de negocio
-- Reportes financieros
-- Métricas de rendimiento
-
-</td>
-<td width="25%">
-
-#### 🎓 **Educación**
-- Proyectos universitarios
-- Investigación científica
-- Análisis académicos
-- Tesis de datos
-
-</td>
-<td width="25%">
-
-#### 🏥 **Salud**
-- Análisis epidemiológico
-- Estadísticas médicas
-- Gestión hospitalaria
-- Investigación clínica
-
-</td>
-<td width="25%">
-
-#### 📈 **Marketing**
-- Segmentación de clientes
-- Análisis de campañas
-- Comportamiento del usuario
-- ROI y conversiones
-
-</td>
-</tr>
-</table>
-
----
-
-## 🏗️ Arquitectura del Proyecto
-
-```
-DataVision/
-├── 🎨 interfaz/
-│   └── interfaz_streamlit.py    # Interfaz principal
-├── 🧠 src/
-│   ├── analisis/                # Módulos de análisis
-│   ├── visualizacion/           # Generación de gráficos
-│   ├── exportacion/             # Funciones de exportación
-│   └── utilidades/              # Utilidades comunes
-├── 📊 datos/
-│   └── ejemplos/                # Datasets de prueba
-├── 🖼️ public/
-│   └── img/                     # Imágenes y logos
-├── 📋 config/                   # Configuraciones
-├── 🧪 tests/                    # Tests unitarios
-├── 📚 docs/                     # Documentación
-└── 📄 requirements.txt          # Dependencias
-```
-
----
-
-## 🤝 Contribuir
-
-¡Las contribuciones son bienvenidas! 🎉
-
-### 🔀 **Proceso de Contribución**
-
-1. 🍴 Fork el proyecto
-2. 🌿 Crea tu rama (`git checkout -b feature/AmazingFeature`)
-3. 💾 Commit tus cambios (`git commit -m 'Add some AmazingFeature'`)
-4. 📤 Push a la rama (`git push origin feature/AmazingFeature`)
-5. 🔄 Abre un Pull Request
-
-### 🐛 **Reportar Bugs**
-
-¿Encontraste un bug? [Abre un issue](https://github.com/Luiss2080/DataVision/issues) con:
-- 📝 Descripción detallada del problema
-- 🔄 Pasos para reproducir
-- 📸 Screenshots (si aplica)
-- 🖥️ Información del sistema
-
-### 💡 **Solicitar Features**
-
-¿Tienes una idea genial? [Crea un feature request](https://github.com/Luiss2080/DataVision/issues) explicando:
-- 🎯 El problema que resolvería
-- 💭 La solución propuesta
-- 📈 Beneficios esperados
-
----
-
-## 📊 Estadísticas del Proyecto
-
-<div align="center">
-
-![GitHub stars](https://img.shields.io/github/stars/Luiss2080/DataVision?style=social)
-![GitHub forks](https://img.shields.io/github/forks/Luiss2080/DataVision?style=social)
-![GitHub issues](https://img.shields.io/github/issues/Luiss2080/DataVision)
-![GitHub pull requests](https://img.shields.io/github/issues-pr/Luiss2080/DataVision)
-
-</div>
-
----
-
-## 📜 Licencia
-
-Este proyecto está bajo la Licencia MIT. Ver el archivo [LICENSE](LICENSE) para más detalles.
-
----
-
-## 👨‍💻 Autor
-
-**Luis Alberto** - [@Luiss2080](https://github.com/Luiss2080)
-
-- 📧 Email: [contacto@datavision.com](mailto:contacto@datavision.com)
-- 🐦 Twitter: [@DataVision2025](https://twitter.com/DataVision2025)
-- 💼 LinkedIn: [Luis Alberto](https://linkedin.com/in/luis-alberto)
-
----
-
-## 🙏 Agradecimientos
-
-- 🚀 **Streamlit** - Por la increíble framework de aplicaciones web
-- 🐼 **Pandas** - Por el poderoso análisis de datos
-- 📊 **Plotly** - Por las visualizaciones interactivas
-- 🤖 **GitHub Copilot** - Por la asistencia en el desarrollo
-- ❤️ **Comunidad Open Source** - Por la inspiración y feedback
-
----
-
-<div align="center">
-
-### ⭐ ¡Si te gusta DataVision, danos una estrella en GitHub! ⭐
-
-**Hecho con ❤️ en Python 🐍**
-
-*DataVision 2025 - Transformando datos en decisiones inteligentes*
-
-</div>
+<div align="center"><sub>Hecho por Luiss2080 · Streamlit + pandas + Plotly</sub></div>
