@@ -39,4 +39,10 @@ export class UsersService {
     const { password, ...result } = user;
     return result;
   }
+
+  async findAll(): Promise<Omit<User, 'password'>[]> {
+    const users = await this.prisma.user.findMany();
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    return users.map(({ password, ...user }) => user);
+  }
 }
