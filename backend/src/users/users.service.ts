@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { PrismaService } from '../prisma/prisma.service';
+import { PrismaService } from '../prisma/prisma.service.js';
 import { Prisma, User } from '@prisma/client';
 import * as bcrypt from 'bcrypt';
 
@@ -45,7 +45,7 @@ export class UsersService {
       orderBy: { createdAt: 'desc' }
     });
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    return users.map(({ password, ...user }) => user);
+    return users.map(({ password, ...user }: User) => user);
   }
 
   async toggleBlock(id: string): Promise<Omit<User, 'password'>> {
