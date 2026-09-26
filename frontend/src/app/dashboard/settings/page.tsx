@@ -49,7 +49,8 @@ export default function SettingsPage() {
 
       toast.success("Perfil actualizado correctamente en la base de datos");
       setPassword("");
-    } catch (error: any) {
+    } catch (err: unknown) {
+      const error = err as any;
       toast.error(error.response?.data?.message || "Ocurrió un error al guardar");
     } finally {
       setLoading(false);
@@ -79,7 +80,7 @@ export default function SettingsPage() {
           >
             <div className="w-24 h-24 rounded-full bg-zinc-200 dark:bg-zinc-800 flex items-center justify-center overflow-hidden border-2 border-transparent group-hover:border-blue-500 transition-colors">
               {(preview || currentAvatarUrl) ? (
-                <img src={preview || currentAvatarUrl} alt="Avatar" className="w-full h-full object-cover" />
+                <img src={preview || currentAvatarUrl || undefined} alt="Avatar" className="w-full h-full object-cover" />
               ) : (
                 <UserIcon className="w-10 h-10 text-zinc-400" />
               )}
