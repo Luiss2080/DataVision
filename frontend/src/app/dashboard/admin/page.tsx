@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 import { api } from "@/lib/axios";
 import { motion } from "framer-motion";
-import { ShieldAlert, User, Trash2, Ban } from "lucide-react";
+import { ShieldAlert, User, Trash2, Ban, CheckCircle } from "lucide-react";
 import { toast } from "sonner";
 import { useAuthStore } from "@/store/useAuthStore";
 import { useRouter } from "next/navigation";
@@ -12,6 +12,7 @@ interface UserData {
   id: string;
   email: string;
   role: string;
+  isActive: boolean;
   createdAt: string;
 }
 
@@ -21,25 +22,47 @@ export default function AdminPanel() {
   const currentUser = useAuthStore(state => state.user);
   const router = useRouter();
 
+  const fetchUsers = async () => {
+    try {
+      const { data } = await api.get('/users/all');
+      setUsers(data);
+    } catch (error) {
+      toast.error("Error al cargar usuarios. Probablemente no tengas permisos.");
+    } finally {
+      setLoading(false);
+    }
+  };
+
   useEffect(() => {
     if (currentUser && currentUser.role !== 'ADMIN') {
       toast.error("Acceso denegado. No eres administrador.");
       router.push("/dashboard");
       return;
     }
-
-    const fetchUsers = async () => {
-      try {
-        const { data } = await api.get('/users/all');
-        setUsers(data);
-      } catch (error) {
-        toast.error("Error al cargar usuarios. Probablemente no tengas permisos.");
-      } finally {
-        setLoading(false);
-      }
-    };
     fetchUsers();
   }, [currentUser, router]);
+
+  const handleToggleBlock = async (id: string, currentStatus: boolean) => {
+    try {
+      await api.patch(`/users/${id}/block`);
+      toast.success(currentStatus ? "Usuario bloqueado exitosamente" : "Usuario desbloqueado exitosamente");
+      fetchUsers(); // Recargar la tabla
+    } catch (error: any) {
+      toast.error(error.response?.data?.message || "No se pudo cambiar el estado del usuario");
+    }
+  };
+
+  const handleDelete = async (id: string) => {
+    if (!confirm("¿Estás seguro de que deseas eliminar este usuario permanentemente? Esta acción es irreversible.")) return;
+    
+    try {
+      await api.delete(`/users/${id}`);
+      toast.success("Usuario eliminado de la base de datos");
+      fetchUsers(); // Recargar la tabla
+    } catch (error: any) {
+      toast.error(error.response?.data?.message || "Error al eliminar usuario");
+    }
+  };
 
   if (loading) return <div className="text-zinc-500">Cargando datos clasificados...</div>;
 
@@ -62,7 +85,8 @@ export default function AdminPanel() {
             <tr>
               <th className="px-6 py-4 font-semibold text-zinc-600 dark:text-zinc-300">Usuario</th>
               <th className="px-6 py-4 font-semibold text-zinc-600 dark:text-zinc-300">Rol</th>
-              <th className="px-6 py-4 font-semibold text-zinc-600 dark:text-zinc-300">Fecha de Registro</th>
+              <th className="px-6 py-4 font-semibold text-zinc-600 dark:text-zinc-300">Estado</th>
+              <th className="px-6 py-4 font-semibold text-zinc-600 dark:text-zinc-300">Registro</th>
               <th className="px-6 py-4 font-semibold text-zinc-600 dark:text-zinc-300 text-right">Acciones</th>
             </tr>
           </thead>
@@ -88,14 +112,27 @@ export default function AdminPanel() {
                     {u.role}
                   </span>
                 </td>
+                <td className="px-6 py-4">
+                  <span className={`px-2 py-1 rounded text-xs font-bold ${u.isActive ? 'bg-green-500/10 text-green-500' : 'bg-red-500/10 text-red-500'}`}>
+                    {u.isActive ? 'Activo' : 'Bloqueado'}
+                  </span>
+                </td>
                 <td className="px-6 py-4 text-zinc-500 dark:text-zinc-400">
                   {new Date(u.createdAt).toLocaleDateString()}
                 </td>
                 <td className="px-6 py-4 text-right">
-                  <button className="p-2 text-zinc-400 hover:text-amber-500 transition-colors" title="Bloquear Usuario">
-                    <Ban className="w-4 h-4" />
+                  <button 
+                    onClick={() => handleToggleBlock(u.id, u.isActive)}
+                    className={`p-2 transition-colors ml-2 ${u.isActive ? 'text-zinc-400 hover:text-amber-500' : 'text-amber-500 hover:text-green-500'}`} 
+                    title={u.isActive ? "Bloquear Usuario" : "Desbloquear Usuario"}
+                  >
+                    {u.isActive ? <Ban className="w-4 h-4" /> : <CheckCircle className="w-4 h-4" />}
                   </button>
-                  <button className="p-2 text-zinc-400 hover:text-red-500 transition-colors ml-2" title="Eliminar Usuario">
+                  <button 
+                    onClick={() => handleDelete(u.id)}
+                    className="p-2 text-zinc-400 hover:text-red-500 transition-colors ml-2" 
+                    title="Eliminar Usuario Permanentemente"
+                  >
                     <Trash2 className="w-4 h-4" />
                   </button>
                 </td>
@@ -103,7 +140,7 @@ export default function AdminPanel() {
             ))}
             {users.length === 0 && (
               <tr>
-                <td colSpan={4} className="px-6 py-8 text-center text-zinc-500">No hay usuarios registrados.</td>
+                <td colSpan={5} className="px-6 py-8 text-center text-zinc-500">No hay usuarios registrados.</td>
               </tr>
             )}
           </tbody>
