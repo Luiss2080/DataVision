@@ -41,8 +41,36 @@ export class UsersService {
   }
 
   async findAll(): Promise<Omit<User, 'password'>[]> {
-    const users = await this.prisma.user.findMany();
+    const users = await this.prisma.user.findMany({
+      orderBy: { createdAt: 'desc' }
+    });
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     return users.map(({ password, ...user }) => user);
+  }
+
+  async toggleBlock(id: string): Promise<Omit<User, 'password'>> {
+    const user = await this.prisma.user.findUnique({ where: { id } });
+    if (!user) throw new Error('Usuario no encontrado');
+
+    if (user.role === 'ADMIN') throw new Error('No puedes bloquear a un administrador');
+
+    const updated = await this.prisma.user.update({
+      where: { id },
+      data: { isActive: !user.isActive },
+    });
+    
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    const { password, ...result } = updated;
+    return result;
+  }
+
+  async remove(id: string): Promise<boolean> {
+    const user = await this.prisma.user.findUnique({ where: { id } });
+    if (!user) throw new Error('Usuario no encontrado');
+    
+    if (user.role === 'ADMIN') throw new Error('No puedes eliminar a un administrador');
+
+    await this.prisma.user.delete({ where: { id } });
+    return true;
   }
 }
