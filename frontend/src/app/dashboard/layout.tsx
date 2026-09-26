@@ -6,6 +6,7 @@ import { useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { motion } from "framer-motion";
 import { Activity, User as UserIcon, LogOut, Settings, BarChart } from "lucide-react";
+import { ThemeSwitcher } from "@/components/theme-switcher";
 
 export default function DashboardLayout({ children }: { children: React.ReactNode }) {
   const { user, token, logout } = useAuthStore();
