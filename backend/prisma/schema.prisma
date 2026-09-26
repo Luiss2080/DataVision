@@ -12,6 +12,7 @@ model User {
   email     String   @unique
   password  String
   role      Role     @default(USER)
+  isActive  Boolean  @default(true)
   profile   Profile?
   sessions  Session[]
   createdAt DateTime @default(now())
