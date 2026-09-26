@@ -24,11 +24,14 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
     <div className="min-h-screen bg-zinc-50 dark:bg-[#09090b] flex">
       {/* Sidebar Lateral */}
       <aside className="w-64 border-r border-zinc-200 dark:border-zinc-800 bg-white dark:bg-[#0f0f11] flex flex-col">
-        <div className="h-16 flex items-center px-6 border-b border-zinc-200 dark:border-zinc-800">
-          <div className="w-8 h-8 rounded-lg bg-blue-600 flex items-center justify-center mr-3">
-            <Activity className="w-5 h-5 text-white" />
+        <div className="h-16 flex items-center px-6 border-b border-zinc-200 dark:border-zinc-800 justify-between">
+          <div className="flex items-center">
+            <div className="w-8 h-8 rounded-lg bg-blue-600 flex items-center justify-center mr-3">
+              <Activity className="w-5 h-5 text-white" />
+            </div>
+            <span className="font-bold">DataVision</span>
           </div>
-          <span className="font-bold">DataVision</span>
+          <ThemeSwitcher />
         </div>
         
         <nav className="flex-1 p-4 space-y-2">
