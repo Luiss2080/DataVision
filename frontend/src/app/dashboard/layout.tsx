@@ -54,8 +54,16 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
 
         <div className="p-4 border-t border-zinc-200 dark:border-zinc-800">
           <div className="flex items-center gap-3 mb-4">
-            <div className="w-10 h-10 rounded-full bg-zinc-200 dark:bg-zinc-800 flex items-center justify-center">
-              <UserIcon className="w-5 h-5" />
+            <div className="w-10 h-10 rounded-full bg-zinc-200 dark:bg-zinc-800 flex items-center justify-center overflow-hidden">
+              {user.profile?.avatarUrl ? (
+                <img 
+                  src={`${process.env.NEXT_PUBLIC_API_URL?.replace('/api', '') || 'http://localhost:3000'}${user.profile.avatarUrl}`} 
+                  alt="Avatar" 
+                  className="w-full h-full object-cover"
+                />
+              ) : (
+                <UserIcon className="w-5 h-5" />
+              )}
             </div>
             <div className="flex flex-col overflow-hidden">
               <span className="text-sm font-semibold truncate">{user.email}</span>
