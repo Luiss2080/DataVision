@@ -13,6 +13,8 @@ export const metadata: Metadata = {
 };
 
 import { ThemeProvider } from "@/components/theme-provider";
+import { SocketProvider } from "@/components/socket-provider";
+import { Toaster } from "sonner";
 
 export default function RootLayout({
   children,
@@ -23,7 +25,10 @@ export default function RootLayout({
     <html lang="es" suppressHydrationWarning>
       <body className={`${inter.variable} antialiased selection:bg-blue-500/30`}>
         <ThemeProvider attribute="class" defaultTheme="system" enableSystem disableTransitionOnChange>
-          {children}
+          <SocketProvider>
+            {children}
+            <Toaster richColors position="top-right" />
+          </SocketProvider>
         </ThemeProvider>
       </body>
     </html>

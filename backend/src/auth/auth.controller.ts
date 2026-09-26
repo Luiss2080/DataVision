@@ -3,11 +3,15 @@ import { AuthService } from './auth.service.js';
 import { Prisma } from '@prisma/client';
 import { AuthGuard } from '@nestjs/passport';
 import { ApiTags, ApiBearerAuth, ApiOperation } from '@nestjs/swagger';
+import { NotificationsGateway } from '../notifications/notifications.gateway.js';
 
 @ApiTags('auth')
 @Controller('auth')
 export class AuthController {
-  constructor(private authService: AuthService) {}
+  constructor(
+    private authService: AuthService,
+    private notificationsGateway: NotificationsGateway
+  ) {}
 
   @ApiOperation({ summary: 'Iniciar sesión' })
   @Post('login')
@@ -16,6 +20,10 @@ export class AuthController {
     if (!user) {
       throw new UnauthorizedException('Credenciales inválidas');
     }
+    
+    // Emitimos una alerta en tiempo real a todos los clientes conectados
+    this.notificationsGateway.emitNotification(`El usuario ${user.email} ha iniciado sesión.`, 'info');
+    
     return this.authService.login(user);
   }
 
