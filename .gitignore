@@ -175,3 +175,20 @@ datos/procesados/*
 # DataVision specific
 MEJORAS_IMPLEMENTADAS.md
 REPOSITORY_DESCRIPTION.txt
+
+# Node.js / NestJS / NextJS
+node_modules/
+dist/
+build/
+.pnp
+.pnp.js
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# Next.js
+.next/
+out/
+.vercel/
+*.tsbuildinfo
