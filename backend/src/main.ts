@@ -18,6 +18,11 @@ async function bootstrap() {
   // Habilitar CORS para conectar con Next.js después
   app.enableCors();
 
+  // Servir archivos estáticos (imágenes de perfil)
+  const express = require('express');
+  const { join } = require('path');
+  app.use('/uploads', express.static(join(process.cwd(), 'uploads')));
+
   await app.listen(process.env.PORT ?? 3000);
 }
 await bootstrap();
