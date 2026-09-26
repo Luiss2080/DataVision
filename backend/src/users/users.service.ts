@@ -73,4 +73,34 @@ export class UsersService {
     await this.prisma.user.delete({ where: { id } });
     return true;
   }
+
+  async updateProfile(userId: string, data: { firstName?: string; lastName?: string; password?: string; avatarUrl?: string }) {
+    if (data.password) {
+      const salt = await bcrypt.genSalt(10);
+      const hashedPassword = await bcrypt.hash(data.password, salt);
+      await this.prisma.user.update({ where: { id: userId }, data: { password: hashedPassword } });
+    }
+
+    const profileData: any = {};
+    if (data.firstName) profileData.firstName = data.firstName;
+    if (data.lastName) profileData.lastName = data.lastName;
+    if (data.avatarUrl) profileData.avatarUrl = data.avatarUrl;
+
+    if (Object.keys(profileData).length > 0) {
+      await this.prisma.profile.upsert({
+        where: { userId },
+        update: profileData,
+        create: { userId, ...profileData }
+      });
+    }
+
+    const user = await this.prisma.user.findUnique({ 
+      where: { id: userId }, 
+      include: { profile: true } 
+    });
+    
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    const { password, ...result } = user!;
+    return result;
+  }
 }
