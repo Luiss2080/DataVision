@@ -1,4 +1,35 @@
-import { Controller } from '@nestjs/common';
+import { Controller, Post, Body, UnauthorizedException, Get, UseGuards, Request } from '@nestjs/common';
+import { AuthService } from './auth.service.js';
+import { Prisma } from '@prisma/client';
+import { AuthGuard } from '@nestjs/passport';
+import { ApiTags, ApiBearerAuth, ApiOperation } from '@nestjs/swagger';
 
+@ApiTags('auth')
 @Controller('auth')
-export class AuthController {}
+export class AuthController {
+  constructor(private authService: AuthService) {}
+
+  @ApiOperation({ summary: 'Iniciar sesión' })
+  @Post('login')
+  async login(@Body() body: any) {
+    const user = await this.authService.validateUser(body.email, body.password);
+    if (!user) {
+      throw new UnauthorizedException('Credenciales inválidas');
+    }
+    return this.authService.login(user);
+  }
+
+  @ApiOperation({ summary: 'Registrar nuevo usuario' })
+  @Post('register')
+  async register(@Body() body: Prisma.UserCreateInput) {
+    return this.authService.register(body);
+  }
+
+  @ApiBearerAuth()
+  @UseGuards(AuthGuard('jwt'))
+  @ApiOperation({ summary: 'Obtener perfil propio (Requiere Token)' })
+  @Get('profile')
+  getProfile(@Request() req: any) {
+    return req.user;
+  }
+}
