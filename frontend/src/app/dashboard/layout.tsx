@@ -5,8 +5,9 @@ import { useRouter } from "next/navigation";
 import { useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { motion } from "framer-motion";
-import { Activity, User as UserIcon, LogOut, Settings, BarChart } from "lucide-react";
+import { Activity, User as UserIcon, LogOut, Settings, BarChart, Shield } from "lucide-react";
 import { ThemeSwitcher } from "@/components/theme-switcher";
+import Link from "next/link";
 
 export default function DashboardLayout({ children }: { children: React.ReactNode }) {
   const { user, token, logout } = useAuthStore();
@@ -36,9 +37,16 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
         </div>
         
         <nav className="flex-1 p-4 space-y-2">
-          <div className="px-4 py-2 rounded-lg bg-blue-50 dark:bg-blue-900/20 text-blue-600 flex items-center gap-3 font-medium">
+          <Link href="/dashboard" className="px-4 py-2 rounded-lg bg-blue-50 dark:bg-blue-900/20 text-blue-600 flex items-center gap-3 font-medium">
             <BarChart className="w-5 h-5" /> Métricas
-          </div>
+          </Link>
+          
+          {user.role === 'ADMIN' && (
+            <Link href="/dashboard/admin" className="px-4 py-2 rounded-lg text-zinc-500 hover:bg-zinc-100 dark:hover:bg-zinc-800 flex items-center gap-3 font-medium cursor-pointer transition-colors">
+              <Shield className="w-5 h-5" /> Panel Admin
+            </Link>
+          )}
+
           <div className="px-4 py-2 rounded-lg text-zinc-500 hover:bg-zinc-100 dark:hover:bg-zinc-800 flex items-center gap-3 font-medium cursor-pointer transition-colors">
             <Settings className="w-5 h-5" /> Ajustes
           </div>
