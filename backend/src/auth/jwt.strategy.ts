@@ -15,8 +15,9 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
 
   async validate(payload: any) {
     const user = await this.usersService.findById(payload.sub);
-    if (!user) {
-      throw new UnauthorizedException();
+    // Si el usuario no existe o fue bloqueado (isActive === false)
+    if (!user || !user.isActive) {
+      throw new UnauthorizedException('Tu cuenta ha sido suspendida o no existe.');
     }
     return user;
   }
