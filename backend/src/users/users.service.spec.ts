@@ -1,6 +1,7 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { UsersService } from './users.service.js';
 import { PrismaService } from '../prisma/prisma.service.js';
+import { vi } from 'vitest';
 
 describe('UsersService', () => {
   let service: UsersService;
@@ -12,7 +13,7 @@ describe('UsersService', () => {
         {
           provide: PrismaService,
           useValue: {
-            user: { findMany: jest.fn(), findUnique: jest.fn() }
+            user: { findMany: vi.fn(), findUnique: vi.fn() }
           }
         }
       ],

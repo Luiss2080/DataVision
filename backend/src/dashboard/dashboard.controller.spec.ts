@@ -1,6 +1,7 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { DashboardController } from './dashboard.controller.js';
 import { DashboardService } from './dashboard.service.js';
+import { vi } from 'vitest';
 
 describe('DashboardController', () => {
   let controller: DashboardController;
@@ -11,7 +12,7 @@ describe('DashboardController', () => {
       providers: [
         {
           provide: DashboardService,
-          useValue: { getMetrics: jest.fn() }
+          useValue: { getMetrics: vi.fn() }
         }
       ]
     }).compile();

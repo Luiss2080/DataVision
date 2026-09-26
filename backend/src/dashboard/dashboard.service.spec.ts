@@ -1,6 +1,7 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { DashboardService } from './dashboard.service.js';
 import { PrismaService } from '../prisma/prisma.service.js';
+import { vi } from 'vitest';
 
 describe('DashboardService', () => {
   let service: DashboardService;
@@ -12,7 +13,7 @@ describe('DashboardService', () => {
         {
           provide: PrismaService,
           useValue: {
-            user: { count: jest.fn() }
+            user: { count: vi.fn() }
           }
         }
       ],
