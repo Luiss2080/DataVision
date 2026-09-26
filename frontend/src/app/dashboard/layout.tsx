@@ -47,9 +47,9 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
             </Link>
           )}
 
-          <div className="px-4 py-2 rounded-lg text-zinc-500 hover:bg-zinc-100 dark:hover:bg-zinc-800 flex items-center gap-3 font-medium cursor-pointer transition-colors">
+          <Link href="/dashboard/settings" className="px-4 py-2 rounded-lg text-zinc-500 hover:bg-zinc-100 dark:hover:bg-zinc-800 flex items-center gap-3 font-medium cursor-pointer transition-colors">
             <Settings className="w-5 h-5" /> Ajustes
-          </div>
+          </Link>
         </nav>
 
         <div className="p-4 border-t border-zinc-200 dark:border-zinc-800">
